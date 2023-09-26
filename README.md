@@ -2,6 +2,7 @@
 
 # Heroes and Villians Express API
 
+<img src="jla.webp">
 
 ## Introduction
 
