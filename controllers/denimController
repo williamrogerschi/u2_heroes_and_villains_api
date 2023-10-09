@@ -1,0 +1,43 @@
+const Denim = require('../models/denim')
+
+
+
+const getAllDenim = async (req,res) => {
+    try {
+        const denims = await Denim.find()
+        return res.json(denims)
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+const getDenimById = async (req,res) => {
+    try {
+        const id = req.params.id
+        const denim = await Denim.findById(id)
+        if(denim) {
+            return res.json(denim)
+        }
+        res.status(404).send(`Brand not found.`)
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+const createDenim = async (req, res) => {
+    try {
+        const denim = await Denim(req.body)
+        await denim.save()
+        return res.status(201).json({
+            denim
+        })
+    } catch(e) {
+        return res.status(500).json({error: e.message})
+    }
+}
+
+module.exports = {
+    getAllDenim,
+    getDenimById,
+    createDenim,
+}

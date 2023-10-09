@@ -1,0 +1,71 @@
+const Brand = require('../models/brand')
+
+
+
+const getAllBrands = async (req, res) => {
+    try {
+        const brands = await Brand.find()
+        return res.json(brands)
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+const getBrandById = async (req,res) => {
+    try {
+        const id = req.params.id
+        const brand = await Brand.findById(id)
+        if(brand) {
+            return res.json(brand)
+        }
+        res.status(404).send(`Brand not found.`)
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+const createBrand = async (req, res) => {
+    try {
+        const brand = await Brand(req.body)
+        await brand.save()
+        return res.status(201).json({
+            brand
+        })
+    } catch(e) {
+        return res.status(500).json({error: e.message})
+    }
+}
+
+const updateBrand = async (req, res) => {
+    try {
+        const id = req.params.id
+        const brand = await Brand.findByIdAndUpdate(id, req.body, { new: true } )
+        if (brand) {
+            return res.status(200).json(brand)
+        }
+        throw new Error(`Brand not found`)
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+const deleteBrand = async(req, res) => {
+    try {
+        const id = req.params.id
+        let brand = await brand.findByIdAndDelete(id)
+        if(brand) {
+            return res.status(200).json(brand)
+        }
+        throw new Error('Brand not found')
+    } catch(e) {
+        return res.status(500).send(e.message)
+    }
+}
+
+module.exports = {
+    getAllBrands,
+    getBrandById,
+    createBrand,
+    updateBrand,
+    deleteBrand,
+}
